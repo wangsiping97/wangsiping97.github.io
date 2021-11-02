@@ -1,28 +1,22 @@
-#### [Back to Main Page](../index.md)
-
-# Parallel GRU (GRU-D)
-A parallel version of GRU (Gated Recurrent Unit) model using OpenMP and CUDA, developed by Siping Wang and Junyan Pu.
+#### [Back to Peoject Page](../index.md)
 
 ## Summary
 
-We are going to implement a parallel version of GRU (gated recurrent unit)[^1] model using OpenMP and CUDA. The performance of this version of GRU will be evaluated essentially by the speedup of the training and inference time on a [multivariate time series dataset](https://sccn.ucsd.edu/~arno/fam2data/publicly_available_EEG_data.htmlI). If there is time left, we will expand our solutions to GRU-D[^2]. 
+We are going to implement a parallel version of GRU (gated recurrent unit) [^1] model using OpenMP and CUDA. The performance of this version of GRU will be evaluated essentially by the speedup of the training and inference time on a [multivariate time series dataset](https://sccn.ucsd.edu/~arno/fam2data/publicly_available_EEG_data.htmlI). If there is time left, we will expand our solutions to GRU-D [^2]. 
 
 ## Background
 
 Gated recurrent unit (GRU) is a type of recurrent neural network, which is able to process input sequence of variable length due to its recurrent structure. Specifically, it performs well in time-series related problems including machine translation and speech recognition. However, due to the iterative nature of RNN models, the training and inference process of GRU are usually slow, since the input of a given time step depends on the output of the previous time step. Specifically, for each time step, the update functions for GRU are as follows: 
 
-<center><img src="../pics/GRU_equation.png" alt="GRU_equation" /></center>
+<center><figure><img src="../pics/GRU_equation.png" alt="GRU_equation"><figcaption>Fig 1. GRU update functions</figcaption></figure></center>
 
-<center><img src="../pics/Gated_Recurrent_Unit.svg" alt="GRU" style="zoom:50%;" /></center>
-
-<center>Fig 1. GRU, fully gated version</center>
+<center><figure><img src="../pics/Gated_Recurrent_Unit.svg" alt="GRU"><figcaption>Fig 2. GRU, fully gated version</figcaption></figure></center>
 
 GRU-D is a variant of GRU, which additionally adds a decaying term to the previous hidden state at time `t-1` and a masking vector to the input `x`, such that it can achieve better performance in multivariate time-series classification problems with missing variables. Specifically, its update functions for each time step are:
 
-<center><img src="../pics/GRU_D_equation.png" alt="GRU_D_equation" /></center>
+<center><figure><img src="../pics/GRU_D_equation.png" alt="GRU_D_equation"><figcaption>Fig 3. GRU-D update functio</figcaption></figure></center>
 
-
-Since GRU-D has more variables than GRU, it makes the training process even slower. However, we realize that there are several model components that can benefit from parallel computation. For example, `z` and `r` at time `t` in the update functions can be computed at the same time, since there is no dependency between them, and the update function contains a lot of matrix multiplication, which can be accelerated using GPU calculation. Furthermore, the forwarding training or inference process can be accelerated by parallelizing the training/testing mini-batches[^3]. Therefore, we decide to parallel as much computation in the model as possible, so that the training and the inference process of GRU (GRU-D) can both be accelerated.
+Since GRU-D has more variables than GRU, it makes the training process even slower. However, we realize that there are several model components that can benefit from parallel computation. For example, `z` and `r` at time `t` in the update functions can be computed at the same time, since there is no dependency between them, and the update function contains a lot of matrix multiplication, which can be accelerated using GPU calculation. Furthermore, the forwarding training or inference process can be accelerated by parallelizing the training/testing mini-batches [^3]. Therefore, we decide to parallel as much computation in the model as possible, so that the training and the inference process of GRU (GRU-D) can both be accelerated.
 
 ## Challenge
 
@@ -30,15 +24,15 @@ The problem is challenging due to the iterative structure of Recurrent Neural Ne
 
 However, the dependency graph of the GRU models shows possibility for further optimization through parallel calculation, so that we hope to explore different approaches to speedup the training and inference procedure. By doing this project, we will be able to gain a deeper understanding of parallel computation by applying techniques learnt in class to machine learning models.
 
-### Dependency
+#### Dependency
 
 The dependencies exist between consecutive time steps, where the input variables of the current time step depend on the output of the previous time step. 
 
-### Locality / Communication-to-computation Ratio
+#### Locality / Communication-to-computation Ratio
 
 Since all time steps share the same variables `W`, `U`, and/or `V`, ideally these variables (matrices) might be able to stay in memory for updates per iteration so that the temporal locality will be good. However, in the training phase, every training data needs to go through the model once per iteration. Therefore, large training samples will result in more communication since the data cannot fit in the cache/memory, and the locality will be bad. 
 
-### Divergent Execution
+#### Divergent Execution
 
 There is no divergent execution for both GRU and GRU-D. For GRU, all training data go through the same model, and all time steps within the model share the same computation graph. For GRU-D, masking is introduced such that masked inputs still join the same computation flow as unmasked inputs. 
 
