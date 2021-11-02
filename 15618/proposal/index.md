@@ -6,7 +6,7 @@ We are going to implement a parallel version of GRU (gated recurrent unit)[^1] m
 
 Gated recurrent unit (GRU) is a type of recurrent neural network, which is able to process input sequence of variable length due to its recurrent structure. Specifically, it performs well in time-series related problems including machine translation and speech recognition. However, due to the iterative nature of RNN models, the training and inference process of GRU are usually slow, since the input of a given time step depends on the output of the previous time step. Specifically, for each time step, the update functions for GRU are as follows: 
 
-<center>![GRU_equation](../pics/GRU_equation.png)</center>
+<center><img src="../pics/GRU_equation.png" alt="GRU_equation" /></center>
 
 <center><img src="../pics/Gated_Recurrent_Unit.svg" alt="GRU" style="zoom:50%;" /></center>
 
@@ -14,7 +14,8 @@ Gated recurrent unit (GRU) is a type of recurrent neural network, which is able 
 
 GRU-D is a variant of GRU, which additionally adds a decaying term to the previous hidden state at time `t-1` and a masking vector to the input `x`, such that it can achieve better performance in multivariate time-series classification problems with missing variables. Specifically, its update functions for each time step are:
 
-<center>![GRU_D_equation](../pics/GRU_D_equation.png)</center>
+<center><img src="../pics/GRU_D_equation.png" alt="GRU_D_equation" /></center>
+
 
 Since GRU-D has more variables than GRU, it makes the training process even slower. However, we realize that there are several model components that can benefit from parallel computation. For example, `z` and `r` at time `t` in the update functions can be computed at the same time, since there is no dependency between them, and the update function contains a lot of matrix multiplication, which can be accelerated using GPU calculation. Furthermore, the forwarding training or inference process can be accelerated by parallelizing the training/testing mini-batches[^3]. Therefore, we decide to parallel as much computation in the model as possible, so that the training and the inference process of GRU (GRU-D) can both be accelerated.
 
