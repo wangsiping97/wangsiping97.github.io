@@ -3,7 +3,7 @@
 # Parallel GRU (GRU-D)
 A parallel version of GRU (Gated Recurrent Unit) model using OpenMP and CUDA, developed by Siping Wang and Junyan Pu.
 
-<center><img src="pics/Gated_Recurrent_Unit.svg" alt="GRU" /></center>
+<center><img src="pics/Gated_Recurrent_Unit.svg" alt="GRU" style="max-width: 100%; height: auto;"/></center>
 
 ## [Proposal](proposal/index.md)
 Our project proposal

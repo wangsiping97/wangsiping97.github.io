@@ -10,11 +10,9 @@ Gated recurrent unit (GRU) is a type of recurrent neural network, which is able 
 
 <center><figure><img src="../pics/GRU_equation.png" alt="GRU_equation"><figcaption>Fig 1. GRU update functions</figcaption></figure></center>
 
-<center><figure><img src="../pics/Gated_Recurrent_Unit.svg" alt="GRU"><figcaption>Fig 2. GRU, fully gated version</figcaption></figure></center>
-
 GRU-D is a variant of GRU, which additionally adds a decaying term to the previous hidden state at time `t-1` and a masking vector to the input `x`, such that it can achieve better performance in multivariate time-series classification problems with missing variables. Specifically, its update functions for each time step are:
 
-<center><figure><img src="../pics/GRU_D_equation.png" alt="GRU_D_equation"><figcaption>Fig 3. GRU-D update functio</figcaption></figure></center>
+<center><figure><img src="../pics/GRU_D_equation.png" alt="GRU_D_equation"><figcaption>Fig 2. GRU-D update functio</figcaption></figure></center>
 
 Since GRU-D has more variables than GRU, it makes the training process even slower. However, we realize that there are several model components that can benefit from parallel computation. For example, `z` and `r` at time `t` in the update functions can be computed at the same time, since there is no dependency between them, and the update function contains a lot of matrix multiplication, which can be accelerated using GPU calculation. Furthermore, the forwarding training or inference process can be accelerated by parallelizing the training/testing mini-batches [^3]. Therefore, we decide to parallel as much computation in the model as possible, so that the training and the inference process of GRU (GRU-D) can both be accelerated.
 
