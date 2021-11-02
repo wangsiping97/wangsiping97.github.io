@@ -1,3 +1,6 @@
+# Parallel GRU (GRU-D)
+A parallel version of GRU (Gated Recurrent Unit) model using OpenMP and CUDA, by Siping Wang and Junyan Pu.
+
 ## Summary
 
 We are going to implement a parallel version of GRU (gated recurrent unit)[^1] model using OpenMP and CUDA. The performance of this version of GRU will be evaluated essentially by the speedup of the training and inference time on a [multivariate time series dataset](https://sccn.ucsd.edu/~arno/fam2data/publicly_available_EEG_data.htmlI). If there is time left, we will expand our solutions to GRU-D[^2]. 
