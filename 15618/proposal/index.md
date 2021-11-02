@@ -5,24 +5,17 @@ We are going to implement a parallel version of GRU (gated recurrent unit)[^1] m
 ## Background
 
 Gated recurrent unit (GRU) is a type of recurrent neural network, which is able to process input sequence of variable length due to its recurrent structure. Specifically, it performs well in time-series problems including machine translation and speech recognition. However, due to the iterative nature of RNN models, the training and inference process of GRU is usually slow, since the input of a given time step depends on the output of the previous time step. Specifically, for each time step, the update functions for GRU is as follows: 
-$$
-z_t = \sigma_g(W_zx_t + U_zh_{t-1} + b_z)\\
-r_t = \sigma_g(W_rx_t + U_rh_{t-1} + b_r)\\
-\hat{h_t} = \phi_h(W_hx_t + U_h(r_t\odot h_{t-1}) + b_h)\\
-h_t = (1-z_t) \odot h_{t-1} + z_t \odot \hat{h_t}
-$$
-![GRU](https://github.com/wangsiping97/wangsiping97.github.io/blob/main/15618/pics/Gated_Recurrent_Unit%2C_base_type.svg)
+
+![GRU_equation](../pics/GRU_equation.png)
+
+![GRU](../pics/Gated_Recurrent_Unit.svg)
 
 <center>Fig 1. GRU, fully gated version</center>
 
 GRU-D is a variant of GRU, which additionally adds a decaying term to the previous hidden state at `t-1` and a masking vector to the input `x`, such that it can achieve better performance on multivariate time series classification problems with missing variables. Specifically, it’s update functions for each time step are:
-$$
-h_{t-1} \gets \gamma_{h_t} \odot h_{t-1},\\
-z_t = \sigma(W_zx_t + U_zh_{t-1} + V_zm_t + b_z)\\
-r_t = \sigma(W_rx_t + U_rh_{t-1} + V_rm_t + b_r)\\
-\tilde{h_t} = tanh(Wx_t + U(r_t \odot h_{t-1}) + Vm_t + b)\\
-h_t = (1-z_t) \odot h_{t-1} + z_t \odot \tilde h_t
-$$
+
+![GRU_D_equation](../pics/GRU_D_equation.png)
+
 Since GRU-D has more variables than GRU, it makes the training process even slower. However, we realize that there are several model components that can benefit from parallel computation. For example, `z` and `r` at time `t` in the update functions can be computed at the same time, since there is no dependency between them, and the update function contains a lot of matrix multiplication, which can be accelerated using GPU calculation. Furthermore, the forwarding training or inference process can be accelerated by parallelizing the training/testing mini-batches[^3]. Therefore, we decide to parallel as much computation in the model as possible, so that the training and the inference process of GRU (GRU-D) can both be accelerated.
 
 ## Challenge
