@@ -1,5 +1,5 @@
 # Parallel GRU (GRU-D)
-A parallel version of GRU (Gated Recurrent Unit) model using OpenMP and CUDA, by Siping Wang and Junyan Pu.
+A parallel version of GRU (Gated Recurrent Unit) model using OpenMP and CUDA, developed by Siping Wang and Junyan Pu.
 
 ## Summary
 
@@ -64,3 +64,5 @@ What we plan to achieve is to have a successfully parallized version of the GRU 
 [^1]: Chung, J., Gulcehre, C., Cho, K., & Bengio, Y. (2014). Empirical evaluation of gated recurrent neural networks on sequence modeling. arXiv preprint arXiv:1412.3555. [Github Repository](https://github.com/PeterChe1990/GRU-D)
 [^2]: Che, Z., Purushotham, S., Cho, K., Sontag, D., & Liu, Y. (2018). Recurrent neural networks for multivariate time series with missing values. Scientific reports, 8(1), 1-12.
 [^3]: Huang, Z., Zweig, G., Levit, M., Dumoulin, B., Oguz, B., & Chang, S. (2013, December). Accelerating recurrent neural network training via two stage classes and parallelization. In *2013 IEEE Workshop on Automatic Speech Recognition and Understanding* (pp. 326-331). IEEE.
+
+### [Back to Main Page](../index.md)
