@@ -56,7 +56,7 @@ What we plan to achieve is to have a successfully parallized version of the GRU 
 | Nov 29 - Dec 5  | Perform analysis and benchmarks on finalized models          |
 | Dec 6 - Dec 9   | Finish report and presentation                               |
 
-
+## Reference
 
 [^1]: Chung, J., Gulcehre, C., Cho, K., & Bengio, Y. (2014). Empirical evaluation of gated recurrent neural networks on sequence modeling. arXiv preprint arXiv:1412.3555. [Github Repository](https://github.com/PeterChe1990/GRU-D)
 [^2]: Che, Z., Purushotham, S., Cho, K., Sontag, D., & Liu, Y. (2018). Recurrent neural networks for multivariate time series with missing values. Scientific reports, 8(1), 1-12.
