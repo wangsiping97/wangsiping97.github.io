@@ -4,23 +4,23 @@ We are going to implement a parallel version of GRU (gated recurrent unit)[^1] m
 
 ## Background
 
-Gated recurrent unit (GRU) is a type of recurrent neural network, which is able to process input sequence of variable length due to its recurrent structure. Specifically, it performs well in time-series problems including machine translation and speech recognition. However, due to the iterative nature of RNN models, the training and inference process of GRU is usually slow, since the input of a given time step depends on the output of the previous time step. Specifically, for each time step, the update functions for GRU is as follows: 
+Gated recurrent unit (GRU) is a type of recurrent neural network, which is able to process input sequence of variable length due to its recurrent structure. Specifically, it performs well in time-series related problems including machine translation and speech recognition. However, due to the iterative nature of RNN models, the training and inference process of GRU are usually slow, since the input of a given time step depends on the output of the previous time step. Specifically, for each time step, the update functions for GRU are as follows: 
 
-![GRU_equation](../pics/GRU_equation.png)
+<center>![GRU_equation](../pics/GRU_equation.png)</center>
 
-![GRU](../pics/Gated_Recurrent_Unit.svg)
+<center><img src="../pics/Gated_Recurrent_Unit.svg" alt="GRU" style="zoom:50%;" /></center>
 
 <center>Fig 1. GRU, fully gated version</center>
 
-GRU-D is a variant of GRU, which additionally adds a decaying term to the previous hidden state at `t-1` and a masking vector to the input `x`, such that it can achieve better performance on multivariate time series classification problems with missing variables. Specifically, it’s update functions for each time step are:
+GRU-D is a variant of GRU, which additionally adds a decaying term to the previous hidden state at time `t-1` and a masking vector to the input `x`, such that it can achieve better performance in multivariate time-series classification problems with missing variables. Specifically, its update functions for each time step are:
 
-![GRU_D_equation](../pics/GRU_D_equation.png)
+<center>![GRU_D_equation](../pics/GRU_D_equation.png)</center>
 
 Since GRU-D has more variables than GRU, it makes the training process even slower. However, we realize that there are several model components that can benefit from parallel computation. For example, `z` and `r` at time `t` in the update functions can be computed at the same time, since there is no dependency between them, and the update function contains a lot of matrix multiplication, which can be accelerated using GPU calculation. Furthermore, the forwarding training or inference process can be accelerated by parallelizing the training/testing mini-batches[^3]. Therefore, we decide to parallel as much computation in the model as possible, so that the training and the inference process of GRU (GRU-D) can both be accelerated.
 
 ## Challenge
 
-The problem is challenging due to the iterative structure of Recurrent Neural Network. Due to the sequential nature of GRU and the share of variables `W`’s, `U`’s, and/or `V`’s across all time steps, this inherent dependency of GRU models makes it hard to parallelize.
+The problem is challenging due to the iterative structure of Recurrent Neural Network. Due to the sequential nature of GRU and the sharing of variables `W`’s, `U`’s, and/or `V`’s across all time steps, this inherent dependency of GRU models makes it hard to parallelize.
 
 However, the dependency graph of the GRU models shows possibility for further optimization through parallel calculation, so that we hope to explore different approaches to speedup the training and inference procedure. By doing this project, we will be able to gain a deeper understanding of parallel computation by applying techniques learnt in class to machine learning models.
 
@@ -30,15 +30,15 @@ The dependencies exist between consecutive time steps, where the input variables
 
 ### Locality / Communication-to-computation Ratio
 
-Since all time steps share the same variables `W`, `U`, and/or `V`, ideally these variables (matrices) might be able to stay in memory for frequent updates so that the temporal locality will be good. However, in the training phase, every training data needs to go through the model once per iteration. Therefore, large training samples will result in more communication since the data cannot fit in the cache/memory, and the locality will be bad. 
+Since all time steps share the same variables `W`, `U`, and/or `V`, ideally these variables (matrices) might be able to stay in memory for updates per iteration so that the temporal locality will be good. However, in the training phase, every training data needs to go through the model once per iteration. Therefore, large training samples will result in more communication since the data cannot fit in the cache/memory, and the locality will be bad. 
 
 ### Divergent Execution
 
-There is no divergent execution for both GRU and GRU-D. For GRU, all training data go through the same model, and all time steps with the model share the same computation graph. For GRU-D, masking is introduced such that masked inputs still join the same computation flow as unmasked inputs. 
+There is no divergent execution for both GRU and GRU-D. For GRU, all training data go through the same model, and all time steps within the model share the same computation graph. For GRU-D, masking is introduced such that masked inputs still join the same computation flow as unmasked inputs. 
 
 ## Resources & Platform Choice
 
-We plan to use **C++** as the programming language and will use **OpenMP** and **CUDA** to parallelize our code. We will start from implementing a sequential version of GRU from scratch, and try to parallelize the model. After this step, we will expand our code to optimize GRU-D as well. For both GRU and GRU-D, we will follow the original papers to implement the models. We will need access to machines with GPUs and multi-core CPUs so that we can try to exploit the parallelism as much as possible. 
+We plan to use **C++** as the programming language and will use **OpenMP** and **CUDA** to parallelize our code. We will start from implementing a sequential version of GRU from scratch, and then try to parallelize the model. After this step, we will expand our code to optimize GRU-D as well. For both GRU and GRU-D, we will follow the original papers to implement the models. We will need access to machines with GPUs and multi-core CPUs so that we can try to exploit the parallelism as much as possible. 
 
 ## Goals & Deliverables
 
