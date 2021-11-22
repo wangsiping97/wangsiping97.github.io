@@ -34,7 +34,7 @@ Below is the raw data and plot of our preliminary experimental results.
 | 500        | 1763.14     | 88.90          | 18.19          | 19.83           | 96.93                  |
 | 1,000      | 1762.24     | 78.60          | 7.73           | 22.42           | 227.97                 |
 
-<center><figure><img src="../pics/pre_res1.png" alt="preliminary_result1"><figcaption>Fig 1. Speedup's versus Batch Size</figcaption></figure></center>
+<center><figure><img src="../pics/pre_res1.png" alt="preliminary_result1"><figcaption>Fig 1. Speedup versus Batch Size</figcaption></figure></center>
 
 <center><figure><img src="../pics/pre_res2.png" alt="preliminary_result2"><figcaption>Fig 2. GPU RUnning Time versus Batch Size</figcaption></figure></center>
 
