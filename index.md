@@ -1,6 +1,10 @@
 # Siping's Project List
 
-Siping started to learn programming and mathematical Olympiads at the age of 13. After receiving the 1st prize at National High School Mathematical Contest in 2014, she was admitted to Tsinghua University a year later, where she graduated with 200 units in both computer science and finance/business coursework. Siping always enjoys taking challenges and stretching her limits. Graduating by 05/2022 from CMU, she is currently on her way of becoming an excellent software engineer in computer systems, modern computing technologies and related fields.
+Hi there 👋 This is Siping and I am a master student at Carnegie Mellon University. 
+
+My interest lies in infrastructure software engineering, especially high-performance computing & heterogeneous computing (GPU, ASIC, distributed systems, etc.). Before diving into these fields, I had experiences in quant research, and even before that I also interned at securities companies! This may sound crazy as I've been thrown myself into such broad areas, but it was in these trial-and-error experiences that I identified the jobs I enjoyed and the industries I was most excited about ✨
+
+I began to learn C++ programming at 13 yr/o, and still on the way to learn and master it. Meanwhile, I also had fun playing with Rust, Golang, and other programming languages. Just enjoy building things at your fingertips! 
 
 ## [Tech Blogs](TechBlogs/index.md)
 Tech blogs and reading notes. 
