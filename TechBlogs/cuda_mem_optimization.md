@@ -1,3 +1,5 @@
+#### [Back to Content Page](../index.md)
+
 # CUDA Memory Optimizations
 
 [CUDA TOOLKIT DOCUMENTATION Chapter 9](https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html#memory-optimizations)
@@ -117,7 +119,7 @@ cudaGetDeviceProperties(&prop, device_id);
 cudaDeviceSetLimit(cudaLimitPersistingL2CacheSize, prop.persistingL2CacheMaxSize); /* Set aside max possible size of L2 cache for persisting accesses */ 
 ```
 
-**Cache Access Window **-- `accessPolicyWindow` includes: 
+**Cache Access Window** -- `accessPolicyWindow` includes: 
 
 - `base_ptr`: Global memory data pointer
 - `num_bytes`: Number of bytes for persisting accesses. Must be less than the max window size. 
