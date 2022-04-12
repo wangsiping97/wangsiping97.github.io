@@ -208,4 +208,4 @@ Best when threads in the same warp accesses only a few distinct locations. If al
 [^1]: [Page-Locked Host Memory for Data Transfer](https://leimao.github.io/blog/Page-Locked-Host-Memory-Data-Transfer/#:~:text=With%20paged%20memory%2C%20the%20specific,locked%20memory%20or%20pinned%20memory.)
 [^2]: [Introduction to GPGPU and CUDA Programming: Memory Coalescing](https://cvw.cac.cornell.edu/gpu/coalesced#:~:text=Coalesced%20memory%20access%20or%20memory,threads%20in%20a%20single%20transaction.)
 [^3]: [GPU Optimization Fundamentals](https://www.olcf.ornl.gov/wp-content/uploads/2013/02/GPU_Opt_Fund-CW1.pdf)
-[^4]: [CUaccessPolicyWindow_v1 Struct Reference](
+[^4]: [CUaccessPolicyWindow_v1 Struct Reference](https://docs.nvidia.com/cuda/cuda-driver-api/structCUaccessPolicyWindow__v1.html#structCUaccessPolicyWindow__v1_1d6ed5cd7bb416976b45e75bafce547e9)
